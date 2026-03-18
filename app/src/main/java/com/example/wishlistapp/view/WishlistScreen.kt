@@ -2,6 +2,7 @@ package com.example.wishlistapp.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -9,10 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -75,6 +78,9 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
                     description = item.description,
                     onClick = {
                         navigateToUpdateItem(item.id, item.title, item.description)
+                    },
+                    onDelete = {
+                        viewModel.deleteItem(item)
                     }
                 )
             }
@@ -86,10 +92,11 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
 }
 
 @Composable
-fun WishListCard(title: String, description: String , onClick: () -> Unit) {
+fun WishListCard(title: String, description: String , onClick: () -> Unit ,     onDelete: () -> Unit ) {
     Card(
         modifier = Modifier.padding(10.dp),
         onClick = onClick
+
 
     ) {
         Column(
@@ -97,13 +104,28 @@ fun WishListCard(title: String, description: String , onClick: () -> Unit) {
             modifier = Modifier.padding(10.dp).fillMaxSize()
         ) {
 
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            //  Title + Delete icon row
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
 
-            Spacer(modifier = Modifier.height(10.dp))
+                IconButton(onClick = {
+                    onDelete()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.Red
+                    )
+                }
+            }
 
             Text(
                 text = description

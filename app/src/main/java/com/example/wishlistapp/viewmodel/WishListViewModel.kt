@@ -1,5 +1,6 @@
 package com.example.wishlistapp.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.wishlistapp.repository.WishListRepository
 import com.example.wishlistapp.model.WishListModel
@@ -8,7 +9,7 @@ import com.example.wishlistapp.repository.WishRepositoryImpl
 class WishListViewModel(
     private val repository: WishListRepository = WishRepositoryImpl()
 ) : ViewModel() {
-    private val _wishListItems = mutableListOf<WishListModel>()
+    private val _wishListItems = mutableStateListOf<WishListModel>()
     val wishListItems: List<WishListModel> = _wishListItems
 
     init {
@@ -31,6 +32,8 @@ class WishListViewModel(
     fun deleteItem(item: WishListModel) {
         repository.deleteItem(item)
         _wishListItems.remove(item)
+
+
     }
 
 }
