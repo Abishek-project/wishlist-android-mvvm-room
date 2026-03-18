@@ -31,7 +31,7 @@ import com.example.wishlistapp.viewmodel.WishListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit){
+fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit , navigateToUpdateItem: (id: Int, title: String, description: String) -> Unit){
 
     val wishListItems = viewModel.wishListItems
 
@@ -72,7 +72,10 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
 
                 WishListCard(
                     title = item.title,
-                    description = item.description
+                    description = item.description,
+                    onClick = {
+                        navigateToUpdateItem(item.id, item.title, item.description)
+                    }
                 )
             }
 
@@ -83,9 +86,11 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
 }
 
 @Composable
-fun WishListCard(title: String, description: String ) {
+fun WishListCard(title: String, description: String , onClick: () -> Unit) {
     Card(
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp),
+        onClick = onClick
+
     ) {
         Column(
             horizontalAlignment = Alignment.Start,

@@ -13,6 +13,17 @@ class WishRepositoryImpl : WishListRepository {
         return wishListItems
     }
 
+    override fun updateItem(item: WishListModel) {
+        val index = wishListItems.indexOfFirst { it.id == item.id }
+
+        if (index != -1) {
+            wishListItems[index] = item
+        }
+    }
+
+    override fun deleteItem(item: WishListModel) {
+        wishListItems.removeIf { it.id == item.id }
+    }
 }
 
 
