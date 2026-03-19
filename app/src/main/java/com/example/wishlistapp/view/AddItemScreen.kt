@@ -103,7 +103,6 @@ fun AddWishListItem(
                        description.isNotEmpty()
                    ){
                        val newItem = WishListModel(
-                           id = Random.nextInt(),
                            title = title,
                            description = description
                        )

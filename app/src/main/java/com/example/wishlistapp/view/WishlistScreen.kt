@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -21,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +39,7 @@ import com.example.wishlistapp.viewmodel.WishListViewModel
 @Composable
 fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit , navigateToUpdateItem: (id: Int, title: String, description: String) -> Unit){
 
-    val wishListItems = viewModel.wishListItems
+//    val wishListItems = viewModel.wishListItems
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -64,27 +67,27 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
         containerColor = Color(0xFFF8FAFC)
     ) { innerPadding ->
 
+        val wishListItems by viewModel.getAllItems.collectAsState(initial = emptyList())
+
         LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
+                .fillMaxSize()
         ) {
 
-            items(wishListItems.size) {
-                val item = wishListItems[it]
+            items(wishListItems) { item ->
 
                 WishListCard(
                     title = item.title,
                     description = item.description,
                     onClick = {
-                        navigateToUpdateItem(item.id, item.title, item.description)
+                        navigateToUpdateItem(item.id.toInt(), item.title, item.description)
                     },
                     onDelete = {
                         viewModel.deleteItem(item)
                     }
                 )
             }
-
         }
 
     }
@@ -94,14 +97,14 @@ fun WishlistScreen( viewModel: WishListViewModel , navigateToAddItem: () -> Unit
 @Composable
 fun WishListCard(title: String, description: String , onClick: () -> Unit ,     onDelete: () -> Unit ) {
     Card(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(8.dp),
         onClick = onClick
 
 
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(10.dp).fillMaxSize()
+            modifier = Modifier.padding(8.dp).fillMaxSize()
         ) {
 
             //  Title + Delete icon row
@@ -112,7 +115,7 @@ fun WishListCard(title: String, description: String , onClick: () -> Unit ,     
             ) {
                 Text(
                     text = title,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
 

@@ -70,7 +70,7 @@ fun UpdateWishListItem(
                     if (updatedTitle.isNotEmpty() && updatedDescription.isNotEmpty()) {
 
                         val updatedItem = WishListModel(
-                            id = id,
+                            id = id.toLong(),
                             title = updatedTitle,
                             description = updatedDescription
                         )
